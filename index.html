@@ -119,6 +119,7 @@ li.writeme {
 <script src="unpackers/urlencode_unpacker.js"></script>
 <script src="unpackers/p_a_c_k_e_r_unpacker.js"></script>
 <script src="unpackers/myobfuscate_unpacker.js"></script>
+<script src="unpackers/genericeval_unpacker.js"></script>
 
 <script>
 
@@ -135,6 +136,7 @@ function run_tests() {
     P_A_C_K_E_R.run_tests(st);
     Urlencoded.run_tests(st);
     MyObfuscate.run_tests(st);
+    GenericEval.run_tests(st);
     // $('#testresults').html(results.replace(/r/g, '').replace(/\n/g, '<br>'));
     var results = st.results_raw().replace(/ /g, '&nbsp;').replace(/\r/g, '·').replace(/\n/g, '<br>');
     $('#testresults').html(results).show();
@@ -205,6 +207,12 @@ function unpacker_filter(source) {
     }
     if (MyObfuscate.detect(source)) {
         source = unpacker_filter(MyObfuscate.unpack(source))
+    }
+    if (GenericEval.detect(source)) {
+        var unpacked = GenericEval.unpack(source);
+        if (unpacked != source) {
+            source = unpacker_filter(unpacked);
+        }
     }
 
     return trailing_comments + source;
