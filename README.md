@@ -1,6 +1,7 @@
 # JS Beautifier
 [![Build Status](https://secure.travis-ci.org/einars/js-beautify.png?branch=master)](http://travis-ci.org/einars/js-beautify)
 [![NPM version](https://badge.fury.io/js/js-beautify.png)](http://badge.fury.io/js/js-beautify)
+[![browser support](https://ci.testling.com/bitwiseman/js-beautify.png)](https://ci.testling.com/bitwiseman/js-beautify)
 
 ...or, more specifically, all of the code powering
 [jsbeautifier.org](http://jsbeautifier.org/).

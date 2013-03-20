@@ -13,7 +13,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "node ./tests/beautify-tests.js"
+    "test": "node ./tests/node-beautify-tests.js"
   },
   "bugs": "https://github.com/einars/js-beautify/issues",
   "homepage": "http://jsbeautifier.org/",
@@ -40,5 +40,18 @@
   "dependencies": {
     "config-chain": "~1.1.5",
     "nopt": "~2.1.1"
+  },
+  "devDependencies": {
+    "tape": "0.3.0"
+  },
+  "testling": {
+    "files": "tests/tap-beautify-tests.js",
+    "browsers": {
+      "ie": [ 7, 8, 9, 10 ],
+      "firefox": [ 13 ],
+      "chrome": [ 20 ],
+      "safari": [ 5.1 ],
+      "opera": [ 12 ]
+    }
   }
 }
