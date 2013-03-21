@@ -38,8 +38,8 @@
 */
 
 if (typeof process !== 'undefined' && process.argv[0] === "node") {
-    var css_beautify = require(__dirname + '/beautify-css.js').css_beautify;
-    var js_beautify  = require(__dirname + '/beautify.js').js_beautify;
+    var css_beautify = require('./beautify-css').css_beautify;
+    var js_beautify  = require('./beautify').js_beautify;
 }
 
 function style_html(html_source, options) {
@@ -222,7 +222,7 @@ function style_html(html_source, options) {
           space = false;
         }
 
-        if (content.length && content[content.length-1] !== '=' && input_char !== '>' && space) { 
+        if (content.length && content[content.length-1] !== '=' && input_char !== '>' && space) {
             //no space after = or before >
           if (this.line_char_count >= this.max_char) {
             this.print_newline(false, content);
