@@ -232,6 +232,7 @@
                 indentation_level: next_indent_level,
                 line_indent_level: flags_base ? flags_base.line_indent_level : next_indent_level,
                 start_line_index: output.get_line_number(),
+                start_item_index: output.current_line.get_item_count(),
                 ternary_depth: 0
             };
             return next_flags;
@@ -272,6 +273,8 @@
         if(opt.jslint_happy) {
             opt.space_after_anon_function = true;
         }
+
+        opt.object_brace_style = options.object_brace_style ? options.object_brace_style : opt.brace_style;
 
         if(options.indent_with_tabs){
             opt.indent_char = '\t';
@@ -689,6 +692,16 @@
                 set_mode(MODE.BlockStatement);
             }
 
+            // If object literal and collapse and line_wrap > 0, try one line
+            // While trying one line, any line feed should unwind this and all parent and sibling one-line attempts.
+            // This is going to be expensive and error prone to try, there must be a better way.
+            // As we encounter object literals, begin a queue of them - just use the flags?
+            // Find the earliest item in flags that is currently attempting one-line.  
+            //    Make it "attempt-oneline = false"
+            //    Move each of it's child property declarations move to it's own line
+            //        (track the line index of each start and end.
+            
+            
             var empty_braces = !next_token.comments_before.length &&  next_token.text === '}';
             var empty_anonymous_function = empty_braces && flags.last_word === 'function' &&
                 last_type === 'TK_END_EXPR';
