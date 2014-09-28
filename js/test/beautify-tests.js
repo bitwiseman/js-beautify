@@ -13,7 +13,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         space_before_conditional: true,
         break_chained_methods: false,
         selector_separator: '\n',
-        end_with_newline: true
+        end_with_newline: false
     };
 
     function test_js_beautifier(input)
@@ -37,11 +37,11 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
     // does not check the indentation / surroundings as bt() does
     function test_fragment(input, expected)
     {
-        expected = expected || input;
+        expected = expected || expected === '' ? expected : input;
         sanitytest.expect(input, expected);
         // if the expected is different from input, run it again
         // expected output should be unchanged when run twice.
-        if (expected != input) {
+        if (expected !== input) {
             sanitytest.expect(expected, expected);
         }
     }
@@ -54,7 +54,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
     {
         var wrapped_input, wrapped_expectation;
 
-        expectation = expectation || input;
+        expectation = expectation || expectation === '' ? expectation : input;
         sanitytest.test_function(test_js_beautifier, 'js_beautify');
         test_fragment(input, expectation);
 
@@ -79,13 +79,16 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
     {
         var wrapped_input, wrapped_expectation, field_input, field_expectation;
 
-        expectation = expectation || input;
+        expectation = expectation || expectation === '' ? expectation : input;
         sanitytest.test_function(test_html_beautifier, 'html_beautify');
         test_fragment(input, expectation);
 
         if (opts.indent_size === 4 && input) {
             wrapped_input = '<div>\n' + input.replace(/^(.+)$/mg, '    $1') + '\n    <span>inline</span>\n</div>';
             wrapped_expectation = '<div>\n' + expectation.replace(/^(.+)$/mg, '    $1') + '\n    <span>inline</span>\n</div>';
+            if (opts.end_with_newline) {
+                wrapped_expectation += '\n';
+            }
             test_fragment(wrapped_input, wrapped_expectation);
         }
 
@@ -114,7 +117,7 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
     {
         var wrapped_input, wrapped_expectation;
 
-        expectation = expectation || input;
+        expectation = expectation || expectation === '' ? expectation : input;
         sanitytest.test_function(test_css_beautifier, 'css_beautify');
         test_fragment(input, expectation);
     }
@@ -140,15 +143,23 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         opts.keep_array_indentation = false;
         opts.brace_style       = "collapse";
 
-
         // unicode support
         bt('var ' + String.fromCharCode(3232) + '_' + String.fromCharCode(3232) + ' = "hi";');
         bt('var ' + String.fromCharCode(228) + 'x = {\n    ' + String.fromCharCode(228) + 'rgerlich: true\n};');
 
+        opts.end_with_newline = true;
+        test_fragment('', '\n');
+        test_fragment('   return .5','   return .5\n');
+        test_fragment('   \n\nreturn .5\n\n\n\n','   return .5\n');
+        test_fragment('\n', '\n');
+
+        opts.end_with_newline = false;
         bt('');
+        test_fragment('\n', '');
         bt('return .5');
         test_fragment('   return .5');
         test_fragment('   return .5;\n   a();');
+        test_fragment('   < div');
         bt('a        =          1', 'a = 1');
         bt('a=1', 'a = 1');
         bt("a();\n\nb();", "a();\n\nb();");
@@ -1749,7 +1760,29 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'var a = {\n        bing: 1\n    },\n    b = 2,\n    c = 3;');
         Urlencoded.run_tests(sanitytest);
 
+
         bth('');
+
+        opts.end_with_newline = true;
+        test_fragment('', '\n');
+        test_fragment('<div></div>\n');
+        test_fragment('<div></div>\n\n\n', '<div></div>\n');
+        test_fragment('<head>\n' +
+            '    <script>\n' +
+            '        mocha.setup("bdd");\n' +
+            '\n' +        
+            '    </script>\n' +
+            '</head>\n');
+
+
+        opts.end_with_newline = false;
+        test_fragment('<head>\n' +
+            '    <script>\n' +
+            '        mocha.setup("bdd");\n' +
+            '    </script>\n' +
+            '</head>');
+            
+        test_fragment('<div></div>\n', '<div></div>');
         bth('<div></div>');
         bth('<div>content</div>');
         bth('<div><div></div></div>',
@@ -2117,6 +2150,12 @@ function run_beautifier_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         opts.indent_size = 1;
         opts.indent_char = '\t';
         opts.selector_separator_newline = true;
+        opts.end_with_newline = false;
+
+        btc('', '');
+        btc('\n', '');
+        btc(".tabs{}\n", ".tabs {}");
+
         opts.end_with_newline = true;
 
         // test basic css beautifier
