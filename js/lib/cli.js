@@ -62,6 +62,7 @@ var fs = require('fs'),
         "wrap_line_length": Number,
         "e4x": Boolean,
         "end_with_newline": Boolean,
+        "comma_first": Boolean,
         // HTML-only
         "max_char": Number, // obsolete since 1.3.5
         "unformatted": [String, Array],
