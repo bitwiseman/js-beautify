@@ -1,5 +1,6 @@
 node {
   checkout scm
-  docker.image('python:2.7')
-  sh './build full'
+  docker.image('python:2.7').inside {
+    sh './build full'    
+  }
  }
