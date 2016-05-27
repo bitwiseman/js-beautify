@@ -3,7 +3,7 @@ node {
   checkout scm
 
   stage 'setup'
-  tool 'Docker-latest'
+  tool 'Docker-1.11.1'
 
   stage 'build'
   docker.withServer('tcp://192.168.99.100:2376', '') {
