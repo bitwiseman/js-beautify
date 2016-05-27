@@ -9,6 +9,7 @@ node('docker-host') {
   stage 'build'
   // docker.withServer('tcp://192.168.99.100:32787', '') {
     docker.image('python:2.7').inside {
+      checkout scm
       sh './build full'
     }
   // }
