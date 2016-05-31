@@ -13,12 +13,6 @@ test_cli_common()
   echo Script: $CLI_SCRIPT
 
   # should find the minimal help output
-  $CLI_SCRIPT 2>&1 | grep -q "Must pipe input or define at least one file\." || {
-      $CLI_SCRIPT 2>&1
-      echo "[$CLI_SCRIPT_NAME] Output should be help message."
-      exit 1
-  }
-
   $CLI_SCRIPT 2> /dev/null && {
       echo "[$CLI_SCRIPT_NAME (with no parameters)] Return code should be error."
       exit 1
@@ -39,6 +33,12 @@ test_cli_common()
       exit 1
   }
 
+  $CLI_SCRIPT 2>&1 | grep -q "Must pipe input or define at least one file\." || {
+      $CLI_SCRIPT 2>&1
+      echo "[$CLI_SCRIPT_NAME] Output should be help message."
+      exit 1
+  }
+  
   MISSING_FILE="$SCRIPT_DIR/../../../js/bin/missing_file"
   MISSING_FILE_MESSAGE="Unable to open path"
   $CLI_SCRIPT $MISSING_FILE 2> /dev/null && {

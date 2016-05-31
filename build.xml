@@ -1,0 +1,12 @@
+<project name="MyProject" default="dist" basedir=".">
+  <target name="dist">
+    <exec executable="/bin/bash">
+      <arg value="-c" />
+      <arg value="./build js" />
+    </exec>
+    <exec executable="/bin/bash">
+      <arg value="-c" />
+      <arg value="./build jstest" />
+    </exec>
+  </target>
+</project>

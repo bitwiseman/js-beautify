@@ -5,6 +5,7 @@ node('docker-host') {
   stage 'setup'
 
   stage 'build'
+
   parallel (
     "Python":  {
       sh './build py'
@@ -23,4 +24,7 @@ node('docker-host') {
       sh './build jstest'
     }
   )
+
+  stage 'deploy'
+  
 }
