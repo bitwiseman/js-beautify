@@ -13,7 +13,10 @@ test_cli_common()
 
     # should find the minimal help output
     $CLI_SCRIPT 2>&1 | grep -q "Must pipe input or define at least one file\." || {
-        $CLI_SCRIPT 2>&1
+        echo --
+        $CLI_SCRIPT 2> temp2.txt
+        cat $CLI_SCRIPT 2>&1
+        echo --
         echo "[$CLI_SCRIPT_NAME] Output should be help message."
         exit 1
     }
