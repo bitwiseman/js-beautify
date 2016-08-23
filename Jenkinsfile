@@ -23,7 +23,7 @@ node() {
 //   )
 
   stage 'test'
-  sh '''#!/usr/bin/env bash --
+  sh '''#!/usr/bin/env bash -l
   env
   set +e
   npm run-script jstest
