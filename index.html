@@ -161,13 +161,12 @@
             P_A_C_K_E_R.run_tests(st);
             Urlencoded.run_tests(st);
             MyObfuscate.run_tests(st);
-            var results = st.results_raw()
+            var results = '<pre id="testoutput">' +
+                (st.results_raw()
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
-                .replace(/ /g, '&nbsp;')
-                .replace(/\r/g, '·')
-                .replace(/\n/g, '<br>');
+                .replace(/\r/g, '·')) +'</pre>'
             $('#testresults').html(results).show();
         }
 

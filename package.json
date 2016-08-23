@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "jshint": "~2.9.1",
+    "nightwatch": "~0.9.8",
     "node-static": "~0.7.1",
     "mustache": "~2.2.1",
     "requirejs": "2.1.x",
