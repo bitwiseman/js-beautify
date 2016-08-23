@@ -12,7 +12,9 @@
     "lib": "js/lib",
     "test": "js/test"
   },
-  "scripts": {},
+  "scripts": {
+    "jstest": "./build jstest"
+  },
   "bugs": "https://github.com/beautify-web/js-beautify/issues",
   "homepage": "http://jsbeautifier.org/",
   "repository": {
