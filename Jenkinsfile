@@ -5,27 +5,14 @@ node() {
   stage 'setup'
 
   stage 'build'
-  sh '''#!/usr/bin/env bash --
-  env
-  ./build py'''
-  sh '''#!/usr/bin/env bash --
-  env
-  ./build js'''
-
-//   parallel (
-//     "Python":  {
-//       sh '''#!/usr/bin/env bash
-//       ./build py'''
-//     },
-//     "Node":  {
-//       sh '''./build js'''
-//     }
-//   )
+  sh '''./build py'''
+  sh '''./build js'''
 
   stage 'test'
   sh '''#!/usr/bin/env bash -l
   env
   set +e
+  /Users/bitwiseman/jenkins/agents/osx_mbp/workspace/beautify-pipeline/nightwatch/js/test/../bin/css-beautify.js
   npm run-script jstest
   '''
   sh '''#!/usr/bin/env bash --
