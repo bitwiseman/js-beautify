@@ -24,24 +24,22 @@ matrix:
           language: c
           # python: 3.4
           env: TRAVIS_NODE_VERSION="8"
+          before_install:
+            - brew update
         - os: osx
           language: c
           # python: 3.4
           env: TRAVIS_NODE_VERSION="9"
+          before_install:
+            - brew update
 
 node_js:
   - 'node'
 
-env:
-  - TRAVIS_NODE_VERSION="6"
-
-before_install: |
+install: |
   if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-    brew update
     brew upgrade python
   fi
-
-install: |
   rm -rf ~/.nvm
   git clone https://github.com/creationix/nvm.git ~/.nvm
   (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
