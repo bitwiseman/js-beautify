@@ -1597,9 +1597,10 @@ function Beautifier(js_source_text, options) {
 
         // inline block
         if (!acorn.newline.test(current_token.text) && !current_token.wanted_newline) {
+            var saved_space_before_token = output.space_before_token;
             output.space_before_token = true;
             print_token();
-            output.space_before_token = true;
+            output.space_before_token = saved_space_before_token;
             return;
         }
 

@@ -195,7 +195,7 @@ function set_formatters(data, test_method, comment_mark) {
     };
 
     data.set_mustache_tags = function() {
-        return function( /* text, render */ ) {
+        return function( /* text, render */) {
             if (this.template) {
                 mustache.tags = this.template.split(' ');
             }
@@ -204,7 +204,7 @@ function set_formatters(data, test_method, comment_mark) {
     };
 
     data.unset_mustache_tags = function() {
-        return function( /* text , render */ ) {
+        return function( /* text , render */) {
             if (this.template) {
                 mustache.tags = ['{{', '}}'];
             }
