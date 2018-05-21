@@ -1613,6 +1613,7 @@ class TestJSBeautifier(unittest.TestCase):
             '}')
         bt('async () => 5;')
         bt('async x => x * 2;')
+        bt('const module = await import("...")')
 
 
         #============================================================

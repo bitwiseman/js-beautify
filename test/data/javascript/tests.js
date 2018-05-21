@@ -826,6 +826,9 @@ exports.test_data = {
             },
             {
                 unchanged: "async x => x * 2;"
+            },
+            {
+                unchanged: 'const module = await import("...")'
             }
         ]
     }, {

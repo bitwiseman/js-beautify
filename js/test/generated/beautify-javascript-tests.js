@@ -1785,6 +1785,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}');
         bt('async () => 5;');
         bt('async x => x * 2;');
+        bt('const module = await import("...")');
 
 
         //============================================================
