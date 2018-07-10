@@ -29,7 +29,7 @@ test_script:
   - npm --version
   - python --version
   # run tests
-  - bash -c "./build ci"
+  - bash -c "make ci"
 
 # Don't actually build.
 build: off
