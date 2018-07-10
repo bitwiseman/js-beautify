@@ -30,7 +30,7 @@ If you are interested, please take a look at the [CONTRIBUTING.md](https://githu
 
 # Installation
 
-You can install the beautifier for node.js or python.
+You can install the beautifier for node.js, python, or as web library.
 
 ## Node.js JavaScript
 
@@ -62,17 +62,18 @@ JS Beautifier is hosted on two CDN services: [cdnjs](https://cdnjs.com/libraries
 
 To pull the latest version from one of these services include one set of the script tags below in your document:
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify-css.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify-html.js"></script>
+<!-- Minified -->
+<!-- Load all beautifiers in on object named "beautifier" (beautifier.{css, html, js}) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautifier.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify-css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautify-html.min.js"></script>
+<!-- Plain bundled source -->
+<!-- Load all beautifiers in on object named "beautifier" (beautifier.{css, html, js}) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.8.0-rc2/beautifier.js"></script>
 
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/gh-pages/js/lib/beautify.js"></script>
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/gh-pages/js/lib/beautify-css.js"></script>
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/gh-pages/js/lib/beautify-html.js"></script>
+
+<!-- RawGit - Use only for testing - unversioned -->
+<!-- Load all beautifiers in on object named "beautifier" (beautifier.{css, html, js}) -->
+<script src="https://cdn.rawgit.com/beautify-web/js-beautify/gh-pages/js/lib/beautifier.js"></script>
 ```
 
 Older versions are available by changing the version number.
@@ -359,6 +360,7 @@ var a =  1;
 /* beautify ignore:end */
 ```
 
+
 # License
 
 You are free to use this in any way you want, in case you find this useful or working for you but you must keep the copyright notice and license. (MIT)
@@ -374,4 +376,3 @@ Thanks also to Jason Diamond, Patrick Hof, Nochum Sossonko, Andreas Schneider, D
 Vasilevsky, Vital Batmanov, Ron Baldwin, Gabriel Harrison, Chris J. Shull,
 Mathias Bynens, Vittorio Gambaletta and others.
 
-(README.md: js-beautify@1.8.0-rc2)

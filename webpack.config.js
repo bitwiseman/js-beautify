@@ -27,6 +27,10 @@ var dist_full = {
     library: 'beautifier',
     libraryTarget: 'umd',
     umdNamedDefine: true,
+    libraryExport: 'default',
+    // Enable output modules to be used in browser or Node.
+    // See: https://github.com/webpack/webpack/issues/6522
+    globalObject: "typeof self !== 'undefined' ? self : this",
     filename: 'beautifier.js',
     path: path.resolve(__dirname, 'dist')
   }
@@ -42,6 +46,10 @@ var dist_prod = {
     library: 'beautifier',
     libraryTarget: 'umd',
     umdNamedDefine: true,
+    libraryExport: 'default',
+    // Enable output modules to be used in browser or Node.
+    // See: https://github.com/webpack/webpack/issues/6522
+    globalObject: "typeof self !== 'undefined' ? self : this",
     filename: 'beautifier.min.js',
     path: path.resolve(__dirname, 'dist')
   }
