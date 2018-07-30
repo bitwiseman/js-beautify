@@ -904,7 +904,13 @@ function Beautifier(js_source_text, options) {
                 if (last_type === 'TK_WORD' &&
                     tokens[token_pos - 2] &&
                     !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED']) &&
-                    (previous_flags.parent.mode !== 'Statement' || previous_flags.parent.mode !== 'Expression')) {
+                    (previous_flags.parent.mode !== 'Statement' || previous_flags.parent.mode !== 'Expression') &&
+                    flag_store.length !== 0 &&
+                    flag_store[flag_store.length - 1].last_word !== 'if' &&
+                    flag_store[flag_store.length - 1].last_word !== 'else' &&
+                    flag_store[flag_store.length - 1].last_text !== '=>' &&
+                    flag_store[flag_store.length - 1].last_text !== ')'
+                ) {
                     output.space_before_token = opt.space_after_function;
                 }
             }
