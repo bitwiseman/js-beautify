@@ -220,7 +220,7 @@ function Beautifier(js_source_text, options) {
   opt.space_in_paren = (options.space_in_paren === undefined) ? false : options.space_in_paren;
   opt.space_in_empty_paren = (options.space_in_empty_paren === undefined) ? false : options.space_in_empty_paren;
   opt.jslint_happy = (options.jslint_happy === undefined) ? false : options.jslint_happy;
-    opt.space_after_function = (options.space_after_function === undefined) ? false : options.space_after_function;
+  opt.space_after_function = (options.space_after_function === undefined) ? false : options.space_after_function;
   opt.space_after_anon_function = (options.space_after_anon_function === undefined) ? false : options.space_after_anon_function;
   opt.keep_array_indentation = (options.keep_array_indentation === undefined) ? false : options.keep_array_indentation;
   opt.space_before_conditional = (options.space_before_conditional === undefined) ? true : options.space_before_conditional;
@@ -663,25 +663,25 @@ function Beautifier(js_source_text, options) {
             (flags.mode === MODE.ObjectLiteral && in_array(last_last_text, ['{', ',']))))) {
 
         output.space_before_token = opt.space_after_anon_function;
-            }
+      }
 
 
-            // {
-            //   data() {}
-            // };
-            // vs
-            // {
-            //   data () {}
-            // }
-            if (current_token.text === '(') {
-                if (last_type === 'TK_RESERVED' && in_array(flags.last_word, ['get', 'set'])) {
-                    output.space_before_token = opt.space_after_function;
-                }
-                if (last_type === 'TK_WORD' &&
-                    tokens[token_pos - 2] &&
-                    !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED'])) {
-                    output.space_before_token = opt.space_after_function;
-                }
+      // {
+      //   data() {}
+      // };
+      // vs
+      // {
+      //   data () {}
+      // }
+      if (current_token.text === '(') {
+        if (last_type === 'TK_RESERVED' && in_array(flags.last_word, ['get', 'set'])) {
+          output.space_before_token = opt.space_after_function;
+        }
+        if (last_type === 'TK_WORD' &&
+          tokens[token_pos - 2] &&
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED'])) {
+          output.space_before_token = opt.space_after_function;
+        }
       }
 
     }
