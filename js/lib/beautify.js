@@ -750,6 +750,7 @@ function Beautifier(js_source_text, options) {
                 last_last_text !== 'function' &&
                 current_token.type !== 'TK_WORD' &&
                 current_token.type !== 'TK_RESERVED' &&
+                current_token.type !== 'TK_OPERATOR' &&
                 current_token.type !== 'TK_START_EXPR') ||
             (flags.mode === MODE.ObjectLiteral && (
                 (flags.last_text === ':' && flags.ternary_depth === 0) || (last_type === 'TK_RESERVED' && in_array(flags.last_text, ['get', 'set']))))
