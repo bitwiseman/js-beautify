@@ -6,7 +6,7 @@
 
   The MIT License (MIT)
 
-  Copyright (c) 2007-2017 Einar Lielmanis, Liam Newman, and contributors.
+  Copyright (c) 2007-2018 Einar Lielmanis, Liam Newman, and contributors.
 
   Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation files
@@ -984,6 +984,12 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '<div>\n' +
             '    {{#each thing}} {{name}} {{/each}}\n' +
             '</div>');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}',
+            //  -- output --
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}} {{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}} {{em-input label="Place*" property="place" type="text" placeholder=""}}');
 
 
         //============================================================
@@ -991,6 +997,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment('{{#if 0}}{{field}}{{/if}}');
         test_fragment(
@@ -1106,17 +1120,17 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '    {{field}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{field}}</div>',
+            '<dIv{{#if test}}class="foo"{{/if}}>{{field}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{field}}</div>');
+            '<dIv {{#if test}} class="foo" {{/if}}>{{field}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{field}}</div>',
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{field}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{field}}</div>');
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{field}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{field}}</span>',
             //  -- output --
@@ -1130,10 +1144,169 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         test_fragment('<span>{{condition < 0 ? "result1" : "result2"}}</span>');
         test_fragment('<span>{{condition1 && condition2 && condition3 && condition4 < 0 ? "resForTrue" : "resForFalse"}}</span>');
 
+        // Handlebars Indenting On - (content = "{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}")
+        reset_options();
+        opts.indent_handlebars = true;
+        test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
+        test_fragment('{{#if 0}}{{/if}}');
+        test_fragment('{{#if 0}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}');
+        test_fragment(
+            '{{#if 0}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '<div>\n' +
+            '</div>\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '<div>\n' +
+            '    {{#if 1}}\n' +
+            '    {{/if}}\n' +
+            '</div>');
+        test_fragment(
+            '<div>\n' +
+            '{{#if 1}}\n' +
+            '{{/if}}\n' +
+            '</div>',
+            //  -- output --
+            '<div>\n' +
+            '    {{#if 1}}\n' +
+            '    {{/if}}\n' +
+            '</div>');
+        test_fragment(
+            '{{#if}}\n' +
+            '{{#each}}\n' +
+            '{{#if}}\n' +
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}\n' +
+            '{{#if}}\n' +
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}\n' +
+            '{{/each}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if}}\n' +
+            '    {{#each}}\n' +
+            '        {{#if}}\n' +
+            '            {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '        {{/if}}\n' +
+            '        {{#if}}\n' +
+            '            {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '        {{/if}}\n' +
+            '    {{/each}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '    {{else}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{else}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    {{else}}\n' +
+            '    {{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '{{else}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if thing}}\n' +
+            '{{#if otherthing}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '    {{else}}\n' +
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '    {{/if}}\n' +
+            '       {{else}}\n' +
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if thing}}\n' +
+            '    {{#if otherthing}}\n' +
+            '        {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '    {{else}}\n' +
+            '        {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '    {{/if}}\n' +
+            '{{else}}\n' +
+            '    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '<div{{someStyle}}></div>',
+            //  -- output --
+            '<div {{someStyle}}></div>');
+        test_fragment(
+            '<dIv{{#if test}}class="foo"{{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</dIv>',
+            //  -- output --
+            '<dIv {{#if test}} class="foo" {{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</dIv>');
+        test_fragment(
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</diV>',
+            //  -- output --
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</diV>');
+        test_fragment(
+            '<span{{#if condition}}class="foo"{{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</span>',
+            //  -- output --
+            '<span {{#if condition}} class="foo" {{/if}}>{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</span>');
+        test_fragment('<div unformatted="{{#if}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}">{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</div>');
+        test_fragment('<div unformatted="{{#if  }}    {{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}">{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}</div>');
+        test_fragment('<div class="{{#if thingIs "value"}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}"></div>');
+        test_fragment('<div class="{{#if thingIs \'value\'}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}"></div>');
+        test_fragment('<div class=\'{{#if thingIs "value"}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}\'></div>');
+        test_fragment('<div class=\'{{#if thingIs \'value\'}}{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}{{/if}}\'></div>');
+        test_fragment('<span>{{condition < 0 ? "result1" : "result2"}}</span>');
+        test_fragment('<span>{{condition1 && condition2 && condition3 && condition4 < 0 ? "resForTrue" : "resForFalse"}}</span>');
+
         // Handlebars Indenting On - (content = "{{! comment}}")
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment('{{#if 0}}{{! comment}}{{/if}}');
         test_fragment(
@@ -1249,17 +1422,17 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '    {{! comment}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{! comment}}</div>',
+            '<dIv{{#if test}}class="foo"{{/if}}>{{! comment}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{! comment}}</div>');
+            '<dIv {{#if test}} class="foo" {{/if}}>{{! comment}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{! comment}}</div>',
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{! comment}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{! comment}}</div>');
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{! comment}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{! comment}}</span>',
             //  -- output --
@@ -1277,6 +1450,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment('{{#if 0}}{{!-- comment--}}{{/if}}');
         test_fragment(
@@ -1392,17 +1573,17 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '    {{!-- comment--}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{!-- comment--}}</div>',
+            '<dIv{{#if test}}class="foo"{{/if}}>{{!-- comment--}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{!-- comment--}}</div>');
+            '<dIv {{#if test}} class="foo" {{/if}}>{{!-- comment--}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- comment--}}</div>',
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- comment--}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- comment--}}</div>');
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- comment--}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{!-- comment--}}</span>',
             //  -- output --
@@ -1416,10 +1597,169 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         test_fragment('<span>{{condition < 0 ? "result1" : "result2"}}</span>');
         test_fragment('<span>{{condition1 && condition2 && condition3 && condition4 < 0 ? "resForTrue" : "resForFalse"}}</span>');
 
+        // Handlebars Indenting On - (content = "{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}")
+        reset_options();
+        opts.indent_handlebars = true;
+        test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
+        test_fragment('{{#if 0}}{{/if}}');
+        test_fragment('{{#if 0}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}');
+        test_fragment(
+            '{{#if 0}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}');
+        test_fragment(
+            '{{#if     words}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}',
+            //  -- output --
+            '{{#if words}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '<div>\n' +
+            '</div>\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '<div>\n' +
+            '    {{#if 1}}\n' +
+            '    {{/if}}\n' +
+            '</div>');
+        test_fragment(
+            '<div>\n' +
+            '{{#if 1}}\n' +
+            '{{/if}}\n' +
+            '</div>',
+            //  -- output --
+            '<div>\n' +
+            '    {{#if 1}}\n' +
+            '    {{/if}}\n' +
+            '</div>');
+        test_fragment(
+            '{{#if}}\n' +
+            '{{#each}}\n' +
+            '{{#if}}\n' +
+            '{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}\n' +
+            '{{#if}}\n' +
+            '{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}\n' +
+            '{{/each}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if}}\n' +
+            '    {{#each}}\n' +
+            '        {{#if}}\n' +
+            '            {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '        {{/if}}\n' +
+            '        {{#if}}\n' +
+            '            {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '        {{/if}}\n' +
+            '    {{/each}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    <div>\n' +
+            '    </div>\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '    {{else}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{else}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if 1}}\n' +
+            '    {{else}}\n' +
+            '    {{/if}}',
+            //  -- output --
+            '{{#if 1}}\n' +
+            '{{else}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '{{#if thing}}\n' +
+            '{{#if otherthing}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '    {{else}}\n' +
+            '{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '    {{/if}}\n' +
+            '       {{else}}\n' +
+            '{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}',
+            //  -- output --
+            '{{#if thing}}\n' +
+            '    {{#if otherthing}}\n' +
+            '        {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '    {{else}}\n' +
+            '        {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '    {{/if}}\n' +
+            '{{else}}\n' +
+            '    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}\n' +
+            '{{/if}}');
+        test_fragment(
+            '<div{{someStyle}}></div>',
+            //  -- output --
+            '<div {{someStyle}}></div>');
+        test_fragment(
+            '<dIv{{#if test}}class="foo"{{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</dIv>',
+            //  -- output --
+            '<dIv {{#if test}} class="foo" {{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</dIv>');
+        test_fragment(
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</diV>',
+            //  -- output --
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</diV>');
+        test_fragment(
+            '<span{{#if condition}}class="foo"{{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</span>',
+            //  -- output --
+            '<span {{#if condition}} class="foo" {{/if}}>{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</span>');
+        test_fragment('<div unformatted="{{#if}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}">{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</div>');
+        test_fragment('<div unformatted="{{#if  }}    {{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}">{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}</div>');
+        test_fragment('<div class="{{#if thingIs "value"}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}"></div>');
+        test_fragment('<div class="{{#if thingIs \'value\'}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}"></div>');
+        test_fragment('<div class=\'{{#if thingIs "value"}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}\'></div>');
+        test_fragment('<div class=\'{{#if thingIs \'value\'}}{{Hello "woRld"}} {{!-- comment--}} {{heLloWorlD}}{{/if}}\'></div>');
+        test_fragment('<span>{{condition < 0 ? "result1" : "result2"}}</span>');
+        test_fragment('<span>{{condition1 && condition2 && condition3 && condition4 < 0 ? "resForTrue" : "resForFalse"}}</span>');
+
         // Handlebars Indenting On - (content = "{pre{{field1}} {{field2}} {{field3}}post")
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment('{{#if 0}}{pre{{field1}} {{field2}} {{field3}}post{{/if}}');
         test_fragment(
@@ -1535,17 +1875,17 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '    {pre{{field1}} {{field2}} {{field3}}post\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{pre{{field1}} {{field2}} {{field3}}post</div>',
+            '<dIv{{#if test}}class="foo"{{/if}}>{pre{{field1}} {{field2}} {{field3}}post</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{pre{{field1}} {{field2}} {{field3}}post</div>');
+            '<dIv {{#if test}} class="foo" {{/if}}>{pre{{field1}} {{field2}} {{field3}}post</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{pre{{field1}} {{field2}} {{field3}}post</div>',
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{pre{{field1}} {{field2}} {{field3}}post</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{pre{{field1}} {{field2}} {{field3}}post</div>');
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{pre{{field1}} {{field2}} {{field3}}post</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{pre{{field1}} {{field2}} {{field3}}post</span>',
             //  -- output --
@@ -1563,6 +1903,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment(
             '{{#if 0}}{{! \n' +
@@ -1755,33 +2103,33 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{! \n' +
+            '<dIv{{#if test}}class="foo"{{/if}}>{{! \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '}}</div>',
+            '}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{! \n' +
+            '<dIv {{#if test}} class="foo" {{/if}}>{{! \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '}}</div>');
+            '}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{! \n' +
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{! \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '}}</div>',
+            '}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{! \n' +
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{! \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '}}</div>');
+            '}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{! \n' +
             ' mult-line\n' +
@@ -1845,6 +2193,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment(
             '{{#if 0}}{{!-- \n' +
@@ -2037,33 +2393,33 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '--}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{!-- \n' +
+            '<dIv{{#if test}}class="foo"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '--}}</div>',
+            '--}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{!-- \n' +
+            '<dIv {{#if test}} class="foo" {{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '--}}</div>');
+            '--}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- \n' +
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '--}}</div>',
+            '--}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- \n' +
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            '--}}</div>');
+            '--}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
@@ -2127,6 +2483,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         reset_options();
         opts.indent_handlebars = true;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment(
             '{{#if 0}}{{!-- \n' +
@@ -2376,45 +2740,45 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             ' {{/ component}}--}}\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>{{!-- \n' +
+            '<dIv{{#if test}}class="foo"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment \n' +
             '{{#> component}}\n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            ' {{/ component}}--}}</div>',
+            ' {{/ component}}--}}</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>{{!-- \n' +
+            '<dIv {{#if test}} class="foo" {{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment \n' +
             '{{#> component}}\n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            ' {{/ component}}--}}</div>');
+            ' {{/ component}}--}}</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- \n' +
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment \n' +
             '{{#> component}}\n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            ' {{/ component}}--}}</div>',
+            ' {{/ component}}--}}</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- \n' +
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>{{!-- \n' +
             ' mult-line\n' +
             'comment \n' +
             '{{#> component}}\n' +
             ' mult-line\n' +
             'comment  \n' +
             '     with spacing\n' +
-            ' {{/ component}}--}}</div>');
+            ' {{/ component}}--}}</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>{{!-- \n' +
             ' mult-line\n' +
@@ -2509,6 +2873,14 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         opts.indent_handlebars = true;
         opts.wrap_line_length = 80;
         test_fragment('{{page-title}}');
+        test_fragment(
+            '{{page-title}}\n' +
+            '{{a}}\n' +
+            '{{value-title}}');
+        test_fragment(
+            '{{em-input label="Some Labe" property="amt" type="text" placeholder=""}}\n' +
+            '{{em-input label="Type*" property="type" type="text" placeholder="(LTD)"}}\n' +
+            '{{em-input label="Place*" property="place" type="text" placeholder=""}}');
         test_fragment('{{#if 0}}{{/if}}');
         test_fragment('{{#if 0}}content{{/if}}');
         test_fragment(
@@ -2624,17 +2996,17 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '    content\n' +
             '{{/if}}');
         test_fragment(
-            '<div{{somestyle}}></div>',
+            '<div{{someStyle}}></div>',
             //  -- output --
-            '<div {{somestyle}}></div>');
+            '<div {{someStyle}}></div>');
         test_fragment(
-            '<div{{#if test}}class="foo"{{/if}}>content</div>',
+            '<dIv{{#if test}}class="foo"{{/if}}>content</dIv>',
             //  -- output --
-            '<div {{#if test}} class="foo" {{/if}}>content</div>');
+            '<dIv {{#if test}} class="foo" {{/if}}>content</dIv>');
         test_fragment(
-            '<div{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>content</div>',
+            '<diV{{#if thing}}{{somestyle}}class="{{class}}"{{else}}class="{{class2}}"{{/if}}>content</diV>',
             //  -- output --
-            '<div {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>content</div>');
+            '<diV {{#if thing}} {{somestyle}} class="{{class}}" {{else}} class="{{class2}}" {{/if}}>content</diV>');
         test_fragment(
             '<span{{#if condition}}class="foo"{{/if}}>content</span>',
             //  -- output --
@@ -2749,6 +3121,37 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
             '</body>\n' +
             '\n' +
             '</html>');
+
+
+        //============================================================
+        // Single line comment after closing tag
+        reset_options();
+        test_fragment(
+            '<div class="col">\n' +
+            '    <div class="row">\n' +
+            '        <div class="card">\n' +
+            '\n' +
+            '            <h1>Some heading</h1>\n' +
+            '            <p>Some text for the card.</p>\n' +
+            '            <img src="some/image.jpg" alt="">\n' +
+            '\n' +
+            '            </div>    <!-- /.card -->\n' +
+            '    </div>\n' +
+            '            <!-- /.row -->\n' +
+            '</div> <!-- /.col -->',
+            //  -- output --
+            '<div class="col">\n' +
+            '    <div class="row">\n' +
+            '        <div class="card">\n' +
+            '\n' +
+            '            <h1>Some heading</h1>\n' +
+            '            <p>Some text for the card.</p>\n' +
+            '            <img src="some/image.jpg" alt="">\n' +
+            '\n' +
+            '        </div> <!-- /.card -->\n' +
+            '    </div>\n' +
+            '    <!-- /.row -->\n' +
+            '</div> <!-- /.col -->');
 
 
         //============================================================
@@ -3002,7 +3405,12 @@ function run_html_tests(test_obj, Urlencoded, js_beautify, html_beautify, css_be
         //============================================================
         // Inline tags formatting
         reset_options();
-        test_fragment('<div><span></span></div><span><div></div></span>');
+        test_fragment(
+            '<div><span></span></div><span><div></div></span>',
+            //  -- output --
+            '<div><span></span></div><span>\n' +
+            '    <div></div>\n' +
+            '</span>');
         test_fragment(
             '<div><div><span><span>Nested spans</span></span></div></div>',
             //  -- output --
