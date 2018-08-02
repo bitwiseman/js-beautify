@@ -906,7 +906,7 @@ function Beautifier(js_source_text, options) {
                     tokens[token_pos - 2] &&
                     !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED']) &&
                     previous_flags.mode !== 'Statement' &&
-                    previous_flags.parent.mode !== 'Statement' &&
+                    (previous_flags.mode !== 'Statement' || previous_flags.parent.mode === 'ObjectLiteral') &&
                     previous_flags.parent.mode !== 'Expression' &&
                     flag_store.length !== 0 &&
                     flag_store[flag_store.length - 1].last_word !== 'if' &&
