@@ -526,7 +526,10 @@ function Beautifier(js_source_text, options) {
       !flags.in_case &&
       !(current_token.text === '--' || current_token.text === '++') &&
       last_last_text !== 'function' &&
-      current_token.type !== TOKEN.WORD && current_token.type !== TOKEN.RESERVED);
+      current_token.type !== TOKEN.WORD &&
+      current_token.type !== TOKEN.RESERVED &&
+      (current_token.type !== TOKEN.OPERATOR || in_array(current_token.text, ['+=', '+'])) &&
+      (current_token.type !== 'TK_START_EXPR' || current_token.text === '('));
     start = start || (flags.mode === MODE.ObjectLiteral && (
       (flags.last_text === ':' && flags.ternary_depth === 0) || (last_type === TOKEN.RESERVED && in_array(flags.last_text, ['get', 'set']))));
 
@@ -679,8 +682,18 @@ function Beautifier(js_source_text, options) {
         }
         if (last_type === 'TK_WORD' &&
           tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED']) &&
-          previous_flags.mode !== 'Statement' &&
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT']) &&
+          (previous_flags.mode === 'Expression' || tokens[token_pos - 2].parent && tokens[token_pos - 2].parent.type === 'TK_EQUALS')
+        ) {
+          output.space_before_token = opt.space_after_function;
+        }
+        if (last_type === 'TK_WORD' &&
+          tokens[token_pos - 2] &&
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED', 'TK_END_BLOCK', 'TK_END_EXPR', 'TK_SEMICOLON']) &&
+          ((previous_flags.mode !== 'Statement' || previous_flags.mode !== 'BlockStatement') &&
+            (previous_flags.declaration_statement || flag_store[flag_store.length - 1].parent.last_text === 'default') ||
+            previous_flags.parent.mode === 'ObjectLiteral') &&
+          previous_flags.parent &&
           previous_flags.parent.mode !== 'Statement' &&
           previous_flags.parent.mode !== 'Expression' &&
           flag_store.length !== 0 &&
