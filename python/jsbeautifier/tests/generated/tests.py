@@ -5143,6 +5143,44 @@ class TestJSBeautifier(unittest.TestCase):
             '    c = 3;')
 
 
+        #============================================================
+        # jslint and space after function - (f = " ")
+        self.reset_options()
+        self.options.space_after_function = true
+        bt(
+            'var a={data(){}}',
+            #  -- output --
+            'var a = {\n' +
+            '    data () {}\n' +
+            '}')
+        bt(
+            'new Vue({\n' +
+            'data(){}\n' +
+            '})',
+            #  -- output --
+            'new Vue({\n' +
+            '    data () {}\n' +
+            '})')
+
+        # jslint and space after function - (f = "")
+        self.reset_options()
+        self.options.space_after_function = false
+        bt(
+            'var a={data(){}}',
+            #  -- output --
+            'var a = {\n' +
+            '    data() {}\n' +
+            '}')
+        bt(
+            'new Vue({\n' +
+            'data(){}\n' +
+            '})',
+            #  -- output --
+            'new Vue({\n' +
+            '    data() {}\n' +
+            '})')
+
+
 
     def test_beautifier_unconverted(self):
         test_fragment = self.decodesto

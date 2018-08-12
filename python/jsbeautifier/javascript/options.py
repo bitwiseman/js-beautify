@@ -36,6 +36,7 @@ class BeautifierOptions:
         self.e4x = False
         self.jslint_happy = False
         self.space_after_anon_function = False
+        self.space_after_function = False
         self.brace_style = 'collapse'
         self.keep_array_indentation = False
         self.space_before_conditional = True

@@ -891,38 +891,54 @@ function Beautifier(js_source_text, options) {
       }
 
 
-      // {
-      //   data() {}
-      // };
-      // vs
-      // {
-      //   data () {}
-      // }
+      // In ES6, you can also define the method properties of an object
+      // var obj = {a: function() {}}
+      // It can be abbreviated
+      // var obj = {a() {}}
+      // In some linters, the property name and the left parenthesis need to have a space, something like that
+      // var obj = {a () {}}
+      // The following code is doing just that
       if (current_token.text === '(') {
+        // If you keep the keyword get or set, execute the if statement
         if (last_type === 'TK_RESERVED' && in_array(flags.last_word, ['get', 'set'])) {
           output.space_before_token = opt.space_after_function;
         }
+
+        // 1、Rule out chained function calls
+        // 2、Object assignment expression,such as
+        // var obj = {
+        //  a () {}
+        // }
+        // 3、The object parameters
+        // new Vue({
+        //   data () {}
+        // })
         if (last_type === 'TK_WORD' &&
           tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT']) &&
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_END_EXPR', 'TK_OPERATOR']) &&
           (previous_flags.mode === 'Expression' || tokens[token_pos - 2].parent && tokens[token_pos - 2].parent.type === 'TK_EQUALS')
         ) {
           output.space_before_token = opt.space_after_function;
         }
+
+        // 1、Exclude chained function calls, named function definitions, element calls after block-level elements, Function call after semicolon, The object property value is the function execution statement
+        // 2、the parent element is not a declaration statement or block level declaration statement and the parent element is an assignment statement or the parent's text content is' default ', or the parent is an object literal
+        // 3、the parent exists and the parent is not declarative statements and expressions
+        // 4、the parent keywords are not 'if' and 'else'
+        // 5、the parent text is not '=>' and ') '
         if (last_type === 'TK_WORD' &&
           tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED', 'TK_END_BLOCK', 'TK_END_EXPR', 'TK_SEMICOLON']) &&
-          ((previous_flags.mode !== 'Statement' || previous_flags.mode !== 'BlockStatement') &&
-            (previous_flags.declaration_statement || flag_store[flag_store.length - 1].parent.last_text === 'default') ||
-            previous_flags.parent.mode === 'ObjectLiteral') &&
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED', 'TK_END_BLOCK', 'TK_END_EXPR', 'TK_SEMICOLON', 'TK_OPERATOR']) &&
+          ((previous_flags.mode !== MODE.Statement || previous_flags.mode !== MODE.BlockStatement) &&
+            (previous_flags.declaration_statement || previous_flags.parent.last_text === 'default') ||
+            previous_flags.parent.mode === MODE.ObjectLiteral) &&
           previous_flags.parent &&
-          previous_flags.parent.mode !== 'Statement' &&
-          previous_flags.parent.mode !== 'Expression' &&
-          flag_store.length !== 0 &&
-          flag_store[flag_store.length - 1].last_word !== 'if' &&
-          flag_store[flag_store.length - 1].last_word !== 'else' &&
-          flag_store[flag_store.length - 1].last_text !== '=>' &&
-          flag_store[flag_store.length - 1].last_text !== ')'
+          previous_flags.parent.mode !== MODE.Statement &&
+          previous_flags.parent.mode !== MODE.Expression &&
+          previous_flags.last_word !== 'if' &&
+          previous_flags.last_word !== 'else' &&
+          previous_flags.last_text !== '=>' &&
+          previous_flags.last_text !== ')'
         ) {
           output.space_before_token = opt.space_after_function;
         }

@@ -323,7 +323,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '`SELECT\n' +
             '  nextval(\'${this.options.schema ? `${this.options.schema}.` : \'\'}"${this.tableName}_${this.autoIncrementField}_seq"\'::regclass\n' +
             '  ) nextval;`');
-
+        
         // Tests for #1030
         bt(
             'const composeUrl = (host) => {\n' +
@@ -401,7 +401,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        yield 42;\n' +
             '    }\n' +
             '};');
-
+        
         // also handle generator shorthand in class - #1013
         bt(
             'class A {\n' +
@@ -998,7 +998,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    .f()\n' +
             '    .f();\n' +
             '});');
-
+        
         // regression test for fix #1378
         bt(
             'f(function() {\n' +
@@ -1378,7 +1378,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         //============================================================
         // operator_position option - set to 'before-newline' (default value)
         reset_options();
-
+        
         // comprehensive, various newlines
         bt(
             'var res = a + b\n' +
@@ -1437,7 +1437,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ab;\n' +
             'ac +\n' +
             '    -ad');
-
+        
         // colon special case
         bt(
             'var a = {\n' +
@@ -1461,7 +1461,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    h;\n' +
             'var i = j ? k :\n' +
             '    l;');
-
+        
         // catch-all, includes brackets and other various code
         bt(
             'var d = 1;\n' +
@@ -1501,7 +1501,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         // operator_position option - set to 'after_newline'
         reset_options();
         opts.operator_position = 'after-newline';
-
+        
         // comprehensive, various newlines
         bt(
             'var res = a + b\n' +
@@ -1559,7 +1559,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    < ab;\n' +
             'ac\n' +
             '    + -ad');
-
+        
         // colon special case
         bt(
             'var a = {\n' +
@@ -1583,7 +1583,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    : h;\n' +
             'var i = j ? k\n' +
             '    : l;');
-
+        
         // catch-all, includes brackets and other various code
         bt(
             'var d = 1;\n' +
@@ -1623,7 +1623,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         // operator_position option - set to 'preserve-newline'
         reset_options();
         opts.operator_position = 'preserve-newline';
-
+        
         // comprehensive, various newlines
         bt(
             'var res = a + b\n' +
@@ -1683,7 +1683,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ab;\n' +
             'ac +\n' +
             '    -ad');
-
+        
         // colon special case
         bt(
             'var a = {\n' +
@@ -1707,7 +1707,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    : h;\n' +
             'var i = j ? k :\n' +
             '    l;');
-
+        
         // catch-all, includes brackets and other various code
         bt(
             'var d = 1;\n' +
@@ -1735,10 +1735,10 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('yield [1, 2]');
         bt('yield function() {};');
         bt('yield* bar();');
-
+        
         // yield should have no space between yield and star
         bt('yield * bar();', 'yield* bar();');
-
+        
         // yield should have space between star and generator
         bt('yield *bar();', 'yield* bar();');
 
@@ -1751,10 +1751,10 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt(
             'async function foo() {}\n' +
             'var x = await foo();');
-
+        
         // async function as an input to another function
         bt('wrapper(async function foo() {})');
-
+        
         // await on inline anonymous function. should have a space after await
         bt(
             'async function() {\n' +
@@ -1768,19 +1768,19 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        return await foo();\n' +
             '    })();\n' +
             '}');
-
+        
         // Regression test #1228
         bt('const module = await import("...")');
-
+        
         // ensure that this doesn't break anyone with the async library
         bt('async.map(function(t) {})');
-
+        
         // async on arrow function. should have a space after async
         bt(
             'async() => {}',
             //  -- output --
             'async () => {}');
-
+        
         // async on arrow function. should have a space after async
         bt(
             'async() => {\n' +
@@ -1790,13 +1790,13 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'async () => {\n' +
             '    return 5;\n' +
             '}');
-
+        
         // async on arrow function returning expression. should have a space after async
         bt(
             'async() => 5;',
             //  -- output --
             'async () => 5;');
-
+        
         // async on arrow function returning object literal. should have a space after async
         bt(
             'async(x) => ({\n' +
@@ -1829,7 +1829,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('<a b="A quote \' inside string."/>');
         bt('<a b=\'A quote " inside string.\'/>');
         bt('<a b=\'Some """ quotes ""  inside string.\'/>');
-
+        
         // Handles inline expressions
         bt(
             'xml=<{a} b="c"><d/><e v={z}>\n' +
@@ -1845,13 +1845,13 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'xml = <{a} b="c">\n' +
             '    <e v={z}>\n' +
             ' foo</e>x</{a}>;');
-
+        
         // xml literals with special characters in elem names - see http://www.w3.org/TR/REC-xml/#NT-NameChar
         bt('xml = <_:.valid.xml- _:.valid.xml-="123"/>;');
-
+        
         // xml literals with attributes without equal sign
         bt('xml = <elem someAttr/>;');
-
+        
         // Handles CDATA
         bt(
             'xml=<![CDATA[ b="c"><d/><e v={z}>\n' +
@@ -1861,7 +1861,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             ' foo</e>x/]]>;');
         bt('xml=<![CDATA[]]>;', 'xml = <![CDATA[]]>;');
         bt('xml=<a b="c"><![CDATA[d/></a></{}]]></a>;', 'xml = <a b="c"><![CDATA[d/></a></{}]]></a>;');
-
+        
         // JSX - working jsx from http://prettydiff.com/unit_tests/beautification_javascript_jsx.txt
         bt(
             'var ListItem = React.createClass({\n' +
@@ -2043,7 +2043,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    }\n' +
             '});\n' +
             'React.render(<MarkdownEditor />, mountNode);');
-
+        
         // JSX - Not quite correct jsx formatting that still works
         bt(
             'var content = (\n' +
@@ -2075,7 +2075,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             ');\n' +
             'var qwer = <DropDown> A dropdown list <Menu> <MenuItem>Do Something</MenuItem> <MenuItem>Do Something Fun!</MenuItem> <MenuItem>Do Something Else</MenuItem> </Menu> </DropDown>;\n' +
             'render(dropdown);');
-
+        
         // Handles messed up tags, as long as it isn't the same name
         // as the root tag. Also handles tags of same name as root tag
         // as long as nesting matches.
@@ -2083,7 +2083,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'xml=<a x="jn"><c></b></f><a><d jnj="jnn"><f></a ></nj></a>;',
             //  -- output --
             'xml = <a x="jn"><c></b></f><a><d jnj="jnn"><f></a ></nj></a>;');
-
+        
         // If xml is not terminated, the remainder of the file is treated
         // as part of the xml-literal (passed through unaltered)
         test_fragment(
@@ -2092,7 +2092,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             //  -- output --
             'xml = <a></b>\n' +
             'c<b;');
-
+        
         // Issue #646 = whitespace is allowed in attribute declarations
         bt(
             'let a = React.createClass({\n' +
@@ -2134,7 +2134,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        );\n' +
             '    }\n' +
             '});');
-
+        
         // Issue #914 - Multiline attribute in root tag
         bt(
             'return (\n' +
@@ -2187,7 +2187,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
 
 
         //============================================================
-        //
+        // 
         reset_options();
 
 
@@ -2344,7 +2344,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ten   : 10\n' +
             '/* beautify preserve:end */\n' +
             '};');
-
+        
         // one space before and after required, only single spaces inside.
         bt(
             'var a = {\n' +
@@ -2394,7 +2394,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    three: 3,\n' +
             '    ten: 10\n' +
             '};');
-
+        
         // Directive: ignore
         bt(
             '/* beautify ignore:start */\n' +
@@ -2456,7 +2456,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ten   : 10\n' +
             '/* beautify ignore:end */\n' +
             '};');
-
+        
         // Directives - multiple and interacting
         bt(
             'var a = {\n' +
@@ -2504,7 +2504,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ten   : 10\n' +
             '/* beautify ignore:end */\n' +
             '};');
-
+        
         // Starts can occur together, ignore:end must occur alone.
         bt(
             'var a = {\n' +
@@ -2589,7 +2589,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         //============================================================
         // Comments and  tests
         reset_options();
-
+        
         // #913
         bt(
             'class test {\n' +
@@ -2603,7 +2603,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        let resp2 = null;\n' +
             '    }\n' +
             '}');
-
+        
         // #1090
         bt(
             'for (var i = 0; i < 20; ++i) // loop\n' +
@@ -2611,7 +2611,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        console.log(i);\n' +
             '    }\n' +
             'console.log("done");');
-
+        
         // #1043
         bt(
             'var o = {\n' +
@@ -2619,14 +2619,14 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}\n' +
             '// ...\n' +
             'foo(o)');
-
+        
         // #713 and #964
         bt(
             'Meteor.call("foo", bar, function(err, result) {\n' +
             '    Session.set("baz", result.lorem)\n' +
             '})\n' +
             '//blah blah');
-
+        
         // #815
         bt(
             'foo()\n' +
@@ -2636,7 +2636,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'const foo = 5\n' +
             '// comment\n' +
             'bar()');
-
+        
         // This shows current behavior.  Note #1069 is not addressed yet.
         bt(
             'if (modulus === 2) {\n' +
@@ -2682,46 +2682,6 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}\n' +
             '?>');
         bt('a = <%= external() %>;');
-
-        //============================================================
-        // jslint and space after function - (f = " ", c = "")
-        reset_options();
-        opts.jslint_happy = true;
-        opts.space_after_function = true;
-        bt(
-            'a = {data(){}}',
-            //  -- output --
-            'a = {\n' +
-            '    data () {}\n' +
-            '}');
-        bt(
-            'new Vue({\n' +
-            '    data() {}\n' +
-            '})',
-            //  -- output --
-            'new Vue({\n' +
-            '    data () {}\n' +
-            '})');
-
-        //============================================================
-        // jslint and space after function - (f = " ", c = "")
-        reset_options();
-        opts.jslint_happy = true;
-        opts.space_after_function = false;
-        bt(
-            'a = {data(){}}',
-            //  -- output --
-            'a = {\n' +
-            '    data() {}\n' +
-            '}');
-        bt(
-            'new Vue({\n' +
-            '    data() {}\n' +
-            '})',
-            //  -- output --
-            'new Vue({\n' +
-            '    data() {}\n' +
-            '})');
 
 
         //============================================================
@@ -2778,7 +2738,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'case !y:\n' +
             '    break;\n' +
             '}');
-
+        
         // typical greasemonkey start
         test_fragment(
             '// comment 2\n' +
@@ -2870,7 +2830,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'case !y:\n' +
             '    break;\n' +
             '}');
-
+        
         // typical greasemonkey start
         test_fragment(
             '// comment 2\n' +
@@ -2962,7 +2922,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    case !y:\n' +
             '        break;\n' +
             '}');
-
+        
         // typical greasemonkey start
         test_fragment(
             '// comment 2\n' +
@@ -3059,7 +3019,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    case !y:\n' +
             '        break;\n' +
             '}');
-
+        
         // typical greasemonkey start
         test_fragment(
             '// comment 2\n' +
@@ -3098,7 +3058,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         //============================================================
         // Regression tests
         reset_options();
-
+        
         // Issue 241
         bt(
             'obj\n' +
@@ -3119,7 +3079,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    .last(function(err, response) {\n' +
             '        console.log(err);\n' +
             '    });');
-
+        
         // Issue 268 and 275
         bt(
             'obj.last(a, function() {\n' +
@@ -3142,7 +3102,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        };\n' +
             '    });\n' +
             '})();');
-
+        
         // Issue 281
         bt(
             'define(["dojo/_base/declare", "my/Employee", "dijit/form/Button",\n' +
@@ -3177,7 +3137,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '            }\n' +
             '        });\n' +
             '    });');
-
+        
         // Issue 459
         bt(
             '(function() {\n' +
@@ -3188,7 +3148,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        bar: ["bar"]\n' +
             '    };\n' +
             '}());');
-
+        
         // Issue 505 - strings should end at newline unless continued by backslash
         bt(
             'var name = "a;\n' +
@@ -3196,11 +3156,11 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt(
             'var name = "a;\\\n' +
             '    name = b";');
-
+        
         // Issue 514 - some operators require spaces to distinguish them
         bt('var c = "_ACTION_TO_NATIVEAPI_" + ++g++ + +new Date;');
         bt('var c = "_ACTION_TO_NATIVEAPI_" - --g-- - -new Date;');
-
+        
         // Issue 440 - reserved words can be used as object property names
         bt(
             'a = {\n' +
@@ -3222,7 +3182,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    "else": {},\n' +
             '    yay: {}\n' +
             '};');
-
+        
         // Issue 331 - if-else with braces edge case
         bt(
             'if(x){a();}else{b();}if(y){c();}',
@@ -3235,7 +3195,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'if (y) {\n' +
             '    c();\n' +
             '}');
-
+        
         // Issue 485 - ensure function declarations behave the same in arrays as elsewhere
         bt(
             'var v = ["a",\n' +
@@ -3251,7 +3211,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}, {\n' +
             '    id: 1\n' +
             '}];');
-
+        
         // Issue 382 - initial totally cursory support for es6 module export
         bt(
             'module "Even" {\n' +
@@ -3266,7 +3226,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'module "Even" {\n' +
             '    export default function div(x, y) {}\n' +
             '}');
-
+        
         // Issue 889 - export default { ... }
         bt(
             'export default {\n' +
@@ -3286,7 +3246,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        return 3;\n' +
             '    }\n' +
             '}');
-
+        
         // Issue 508
         bt('set["name"]');
         bt('get["name"]');
@@ -3304,7 +3264,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    c: 1,\n' +
             '    d: function() {}\n' +
             '};');
-
+        
         // Issue 298 - do not under indent if/while/for condtionals experesions
         bt(
             '\'use strict\';\n' +
@@ -3313,7 +3273,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    })) {\n' +
             '    console.log("hello");\n' +
             '}');
-
+        
         // Issue 298 - do not under indent if/while/for condtionals experesions
         bt(
             '\'use strict\';\n' +
@@ -3322,7 +3282,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    })) {\n' +
             '    console.log("hello");\n' +
             '}');
-
+        
         // Issue 552 - Typescript?  Okay... we didn't break it before, so try not to break it now.
         bt(
             'class Test {\n' +
@@ -3344,7 +3304,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        return 0;\n' +
             '    }\n' +
             '}');
-
+        
         // Issue 583 - Functions with comments after them should still indent correctly.
         bt(
             'function exit(code) {\n' +
@@ -3354,13 +3314,13 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    phantom.onError = function() {};\n' +
             '}\n' +
             '// Comment');
-
+        
         // Issue 806 - newline arrow functions
         bt(
             'a.b("c",\n' +
             '    () => d.e\n' +
             ')');
-
+        
         // Issue 810 - es6 object literal detection
         bt(
             'function badFormatting() {\n' +
@@ -3386,7 +3346,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        j: k\n' +
             '    }\n' +
             '}');
-
+        
         // Issue 602 - ES6 object literal shorthand functions
         bt(
             'return {\n' +
@@ -3459,7 +3419,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        return 1;\n' +
             '    }\n' +
             '}.fn2()');
-
+        
         // Issue 854 - Arrow function with statement block
         bt(
             'test(() => {\n' +
@@ -3471,7 +3431,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        b();\n' +
             '    }\n' +
             '})');
-
+        
         // Issue 406 - Multiline array
         bt(
             'var tempName = [\n' +
@@ -3480,7 +3440,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    (Math.random() * 0x1000000000).toString(36),\n' +
             '    new Date().getTime()\n' +
             '].join("-");');
-
+        
         // Issue 1374 - Parameters starting with ! or [ merged into single line
         bt(
             'fn(\n' +
@@ -3489,7 +3449,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    1,\n' +
             '    [1]\n' +
             ')');
-
+        
         // Issue 1288 - Negative numbers remove newlines in array
         bt(
             'var array = [\n' +
@@ -3500,7 +3460,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    1,\n' +
             '    -3,\n' +
             '];');
-
+        
         // Issue 1229 - Negated expressions in array
         bt(
             'a = [\n' +
@@ -3513,12 +3473,12 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    !true && 1,\n' +
             '    !true && 1\n' +
             ']');
-
+        
         // Issue #996 - Input ends with backslash throws exception
         test_fragment(
             'sd = 1;\n' +
             '/');
-
+        
         // Issue #1079 - unbraced if with comments should still look right
         bt(
             'if (console.log)\n' +
@@ -3527,7 +3487,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '            console.log(i);\n' +
             '// all done\n' +
             'console.log("done");');
-
+        
         // Issue #1085 - function should not have blank line in a number of cases
         bt(
             'var transformer =\n' +
@@ -3536,7 +3496,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    function(x) {\n' +
             '        return x;\n' +
             '    };');
-
+        
         // Issue #569 - function should not have blank line in a number of cases
         bt(
             '(function(global) {\n' +
@@ -3560,8 +3520,8 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    });\n' +
             '}\n' +
             '["navigating"].forEach(bindBrowserEvent);');
-
-        // Issue #892 - new line between chained methods
+        
+        // Issue #892 - new line between chained methods 
         bt(
             'foo\n' +
             '    .who()\n' +
@@ -3571,7 +3531,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    .nothing() // comment\n' +
             '\n' +
             '    .more()');
-
+        
         // Issue #1107 - Missing space between words for label
         bt(
             'function f(a) {c: do if (x) {} else if (y) {} while(0); return 0;}',
@@ -3608,9 +3568,9 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
 
 
         //============================================================
-        //
+        // 
         reset_options();
-
+        
         // exponent literals
         bt('a = 1e10');
         bt('a = 1.3e10');
@@ -3635,7 +3595,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('a=0x.g-12345.3e-10', 'a = 0x.g - 12345.3e-10');
         bt('a=0x0.g-12345.3e-10', 'a = 0x0.g - 12345.3e-10');
         bt('a=0x0.0g-12345.3e-10', 'a = 0x0 .0 g - 12345.3e-10');
-
+        
         // Decimal literals
         bt('a = 0123456789;');
         bt('a = 9876543210;');
@@ -3651,7 +3611,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('a=00B0x0b0', 'a = 00 B0x0b0');
         bt('a=0090x0', 'a = 0090 x0');
         bt('a=0g0b0o0', 'a = 0 g0b0o0');
-
+        
         // Hexadecimal literals
         bt('a = 0x0123456789abcdef;');
         bt('a = 0X0123456789ABCDEF;');
@@ -3668,7 +3628,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('a=0x0B0x0b0', 'a = 0x0B0 x0b0');
         bt('a=0X090x0', 'a = 0X090 x0');
         bt('a=0Xg0b0o0', 'a = 0X g0b0o0');
-
+        
         // Octal literals
         bt('a = 0o01234567;');
         bt('a = 0O01234567;');
@@ -3684,7 +3644,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('a=0o0B0x0b0', 'a = 0o0 B0x0b0');
         bt('a=0O090x0', 'a = 0O0 90 x0');
         bt('a=0Og0b0o0', 'a = 0O g0b0o0');
-
+        
         // Binary literals
         bt('a = 0b010011;');
         bt('a = 0B010011;');
@@ -3700,7 +3660,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('a=0b0B0x0b0', 'a = 0b0 B0x0b0');
         bt('a=0B090x0', 'a = 0B0 90 x0');
         bt('a=0Bg0b0o0', 'a = 0B g0b0o0');
-
+        
         // BigInt literals
         bt('a = 1n;');
         bt('a = 1234567890123456789n;');
@@ -3961,8 +3921,8 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         // Destructured and related
         reset_options();
         opts.brace_style = 'collapse,preserve-inline';
-
-        // Issue 382 - import destructured
+        
+        // Issue 382 - import destructured 
         bt(
             'module "Even" {\n' +
             '    import { odd, oddly } from "Odd";\n' +
@@ -3978,7 +3938,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'import defaultMember, * as name from "module-name";\n' +
             'import "module-name";\n' +
             'import("module-name")');
-
+        
         // Issue #1393 - dynamic import()
         bt(
             'if (from < to) {\n' +
@@ -3986,7 +3946,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '} else {\n' +
             '    import("otherdynamic");\n' +
             '}');
-
+        
         // Issue 858 - from is a keyword only after import
         bt(
             'if (from < to) {\n' +
@@ -3994,7 +3954,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '} else {\n' +
             '    from--;\n' +
             '}');
-
+        
         // Issue 511 - destrutured
         bt(
             'var { b, c } = require("../stores");\n' +
@@ -4003,7 +3963,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'function takeThing({ prop }) {\n' +
             '    console.log("inner prop", prop)\n' +
             '}');
-
+        
         // Issue 315 - Short objects
         bt('var a = { b: { c: { d: e } } };');
         bt(
@@ -4014,7 +3974,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    },\n' +
             '    b2: { c: { d: e } }\n' +
             '};');
-
+        
         // Issue 370 - Short objects in array
         bt(
             'var methods = [\n' +
@@ -4024,7 +3984,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    { name: "min" },\n' +
             '    { name: "max" }\n' +
             '];');
-
+        
         // Issue 838 - Short objects in array
         bt(
             'function(url, callback) {\n' +
@@ -4034,7 +3994,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    }\n' +
             '    else script.onload = callback;\n' +
             '}');
-
+        
         // Issue 578 - Odd indenting after function
         bt(
             'function bindAuthEvent(eventName) {\n' +
@@ -4043,14 +4003,14 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    });\n' +
             '}\n' +
             '["logged_in", "logged_out", "signed_up", "updated_user"].forEach(bindAuthEvent);');
-
+        
         // Issue #487 - some short expressions examples
         bt(
             'if (a == 1) { a++; }\n' +
             'a = { a: a };\n' +
             'UserDB.findOne({ username: "xyz" }, function(err, user) {});\n' +
             'import { fs } from "fs";');
-
+        
         // Issue #982 - Fixed return expression collapse-preserve-inline
         bt(
             'function foo(arg) {\n' +
@@ -4059,8 +4019,8 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    if (!arg) { throw "inline"; }\n' +
             '    return true;\n' +
             '}');
-
-        // Issue #338 - Short expressions
+        
+        // Issue #338 - Short expressions 
         bt(
             'if (someCondition) { return something; }\n' +
             'if (someCondition) {\n' +
@@ -4070,8 +4030,8 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'if (someCondition) {\n' +
             '    return something;\n' +
             '}');
-
-        // Issue #1283 - Javascript ++ Operator get wrong indent
+        
+        // Issue #1283 - Javascript ++ Operator get wrong indent 
         bt(
             '{this.foo++\n' +
             'bar}',
@@ -4080,7 +4040,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    this.foo++\n' +
             '    bar\n' +
             '}');
-
+        
         // Issue #1283 - Javascript ++ Operator get wrong indent (2)
         bt(
             'axios.interceptors.request.use(\n' +
@@ -4260,7 +4220,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             //  -- output --
             'a; /* comment */\n' +
             'b;');
-
+        
         // simple comments don't get touched at all
         test_fragment(
             'a;/*\n' +
@@ -4294,7 +4254,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'no javadoc\n' +
             '*/\n' +
             'b;');
-
+        
         // comment blocks detected and reindented even w/o javadoc starter
         bt(
             'a;/*\n' +
@@ -4341,10 +4301,10 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '} finally {\n' +
             '    d();\n' +
             '}');
-
+        
         //  magic function call
         bt('(xx)()');
-
+        
         // another magic function call
         bt('a[1]()');
         bt(
@@ -4379,12 +4339,12 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             //  -- output --
             'if (a) b();\n' +
             'else c();');
-
+        
         // typical greasemonkey start
         bt(
             '// comment\n' +
             '(function something() {})');
-
+        
         // duplicating newlines
         bt(
             '{\n' +
@@ -4461,7 +4421,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'function foo() {}\n' +
             '\n' +
             '// end-func-comment');
-
+        
         // The exact formatting these should have is open for discussion, but they are at least reasonable
         bt(
             'a = [ // comment\n' +
@@ -4489,13 +4449,13 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}, {\n' +
             '    c: d\n' +
             '}]');
-
+        
         // was: extra space appended
         bt(
             'if (a) {\n' +
             '    do();\n' +
             '}');
-
+        
         // if/else statement with empty body
         bt(
             'if (a) {\n' +
@@ -4509,7 +4469,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '} else {\n' +
             '    // comment\n' +
             '}');
-
+        
         // multiple comments indentation
         bt(
             'if (a) {\n' +
@@ -4603,7 +4563,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '(x) => {\n' +
             '    x\n' +
             '}');
-
+        
         // a common snippet in jQuery plugins
         bt(
             'settings = $.extend({},defaults,settings);',
@@ -4698,21 +4658,21 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}, {\n' +
             '    a: 2\n' +
             '}];');
-
+        
         // incomplete
         test_fragment(
             '{a:#1',
             //  -- output --
             '{\n' +
             '    a: #1');
-
+        
         // incomplete
         test_fragment(
             '{a:#',
             //  -- output --
             '{\n' +
             '    a: #');
-
+        
         // incomplete
         test_fragment(
             '}}}',
@@ -4724,7 +4684,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '<!--\n' +
             'void();\n' +
             '// -->');
-
+        
         // incomplete regexp
         test_fragment('a=/regexp', 'a = /regexp');
         bt(
@@ -4839,7 +4799,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
         bt('elem-- - elem[array]++;');
         bt('elem-- - -elem[array]++;');
         bt('elem-- - +elem[array]++;');
-
+        
         // Handling of newlines around unary ++ and -- operators
         bt(
             '{foo\n' +
@@ -4857,7 +4817,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    foo++\n' +
             '    bar;\n' +
             '}');
-
+        
         // This is invalid, but harder to guard against. Issue #203.
         bt(
             '{foo\n' +
@@ -4869,7 +4829,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    ++\n' +
             '    bar;\n' +
             '}');
-
+        
         // regexps
         bt(
             'a(/abc\\/\\/def/);b()',
@@ -4881,10 +4841,10 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             //  -- output --
             'a(/a[b\\[\\]c]d/);\n' +
             'b()');
-
+        
         // incomplete char class
         test_fragment('a(/a[b\\[');
-
+        
         // allow unescaped / in char classes
         bt(
             'a(/[a/b]/);b()',
@@ -5040,13 +5000,13 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '        wham: 5\n' +
             '    },\n' +
             '    c = 4;');
-
+        
         // inline comment
         bt(
             'function x(/*int*/ start, /*string*/ foo)',
             //  -- output --
             'function x( /*int*/ start, /*string*/ foo)');
-
+        
         // javadoc comment
         bt(
             '/**\n' +
@@ -5068,7 +5028,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '     * foo\n' +
             '     */\n' +
             '}');
-
+        
         // starless block comment
         bt(
             '/**\n' +
@@ -5210,7 +5170,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'var a = a,\n' +
             '    // c\n' +
             '    b;');
-
+        
         // weird element referencing
         bt('foo.("bar");');
         bt(
@@ -5237,7 +5197,7 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             'var b = function() {\n' +
             '    func2()\n' +
             '}');
-
+        
         // code with and without semicolons
         bt(
             'var whatever = require("whatever");\n' +
@@ -5353,6 +5313,44 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '    },\n' +
             '    b = 2,\n' +
             '    c = 3;');
+
+
+        //============================================================
+        // jslint and space after function - (f = " ")
+        reset_options();
+        opts.space_after_function = true;
+        bt(
+            'var a={data(){}}',
+            //  -- output --
+            'var a = {\n' +
+            '    data () {}\n' +
+            '}');
+        bt(
+            'new Vue({\n' +
+            'data(){}\n' +
+            '})',
+            //  -- output --
+            'new Vue({\n' +
+            '    data () {}\n' +
+            '})');
+
+        // jslint and space after function - (f = "")
+        reset_options();
+        opts.space_after_function = false;
+        bt(
+            'var a={data(){}}',
+            //  -- output --
+            'var a = {\n' +
+            '    data() {}\n' +
+            '}');
+        bt(
+            'new Vue({\n' +
+            'data(){}\n' +
+            '})',
+            //  -- output --
+            'new Vue({\n' +
+            '    data() {}\n' +
+            '})');
 
 
     }
