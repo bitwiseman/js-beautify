@@ -5155,12 +5155,22 @@ class TestJSBeautifier(unittest.TestCase):
             '}')
         bt(
             'new Vue({\n' +
-            'data(){}\n' +
-            '})',
+            'data(){},\n' +
+            'a:1})',
             #  -- output --
             'new Vue({\n' +
-            '    data () {}\n' +
+            '    data () {},\n' +
+            '    a: 1\n' +
             '})')
+        bt(
+            'export default {\n' +
+            'data(){},\n' +
+            'a:1}',
+            #  -- output --
+            'export default {\n' +
+            '    data () {},\n' +
+            '    a: 1\n' +
+            '}')
 
         # jslint and space after function - (f = "")
         self.reset_options()
@@ -5173,12 +5183,22 @@ class TestJSBeautifier(unittest.TestCase):
             '}')
         bt(
             'new Vue({\n' +
-            'data(){}\n' +
-            '})',
+            'data(){},\n' +
+            'a:1})',
             #  -- output --
             'new Vue({\n' +
-            '    data() {}\n' +
+            '    data() {},\n' +
+            '    a: 1\n' +
             '})')
+        bt(
+            'export default {\n' +
+            'data(){},\n' +
+            'a:1}',
+            #  -- output --
+            'export default {\n' +
+            '    data() {},\n' +
+            '    a: 1\n' +
+            '}')
 
 
 

@@ -3365,8 +3365,11 @@ exports.test_data = {
         input_: 'var a={data(){}}',
         output: 'var a = {\n    data{{f}}() {}\n}'
       }, {
-        input_: 'new Vue({\ndata(){}\n})',
-        output: 'new Vue({\n    data{{f}}() {}\n})'
+        input_: 'new Vue({\ndata(){},\na:1})',
+        output: 'new Vue({\n    data{{f}}() {},\n    a: 1\n})'
+      }, {
+        input_: 'export default {\ndata(){},\na:1}',
+        output: 'export default {\n    data{{f}}() {},\n    a: 1\n}'
       }]
     }
   ],

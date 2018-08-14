@@ -5327,12 +5327,22 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}');
         bt(
             'new Vue({\n' +
-            'data(){}\n' +
-            '})',
+            'data(){},\n' +
+            'a:1})',
             //  -- output --
             'new Vue({\n' +
-            '    data () {}\n' +
+            '    data () {},\n' +
+            '    a: 1\n' +
             '})');
+        bt(
+            'export default {\n' +
+            'data(){},\n' +
+            'a:1}',
+            //  -- output --
+            'export default {\n' +
+            '    data () {},\n' +
+            '    a: 1\n' +
+            '}');
 
         // jslint and space after function - (f = "")
         reset_options();
@@ -5345,12 +5355,22 @@ function run_javascript_tests(test_obj, Urlencoded, js_beautify, html_beautify, 
             '}');
         bt(
             'new Vue({\n' +
-            'data(){}\n' +
-            '})',
+            'data(){},\n' +
+            'a:1})',
             //  -- output --
             'new Vue({\n' +
-            '    data() {}\n' +
+            '    data() {},\n' +
+            '    a: 1\n' +
             '})');
+        bt(
+            'export default {\n' +
+            'data(){},\n' +
+            'a:1}',
+            //  -- output --
+            'export default {\n' +
+            '    data() {},\n' +
+            '    a: 1\n' +
+            '}');
 
 
     }

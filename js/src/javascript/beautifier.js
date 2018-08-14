@@ -693,8 +693,8 @@ function Beautifier(js_source_text, options) {
         // })
         if (last_type === 'TK_WORD' &&
           tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_END_EXPR', 'TK_OPERATOR']) &&
-          (previous_flags.mode === 'Expression' || tokens[token_pos - 2].parent && tokens[token_pos - 2].parent.type === 'TK_EQUALS')
+          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_END_EXPR', 'TK_OPERATOR', 'TK_RESERVED']) &&
+          (in_array(previous_flags.mode, ['Expression', 'BlockStatement']) || tokens[token_pos - 2].parent && tokens[token_pos - 2].parent.type === 'TK_EQUALS')
         ) {
           output.space_before_token = opt.space_after_function;
         }

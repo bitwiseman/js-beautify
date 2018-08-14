@@ -563,7 +563,7 @@ class Beautifier:
                 if (self.last_type == TOKEN.RESERVED and self.flags.last_word in ['get', 'set']):
                     self.output.space_before_token = self.opts.space_after_function
 
-                if (self.last_type == TOKEN.WORD and self.tokens[self.token_pos -2] and self.tokens[self.token_pos -2].type not in [TOKEN.DOT, TOKEN.END_EXPR, TOKEN.OPERATOR] and (self.previous_flags.mode == MODE.Expression or self.tokens[self.token_pos -2].parent and self.tokens[self.token_pos -2].parent.type == TOKEN.EQUALS)):
+                if (self.last_type == TOKEN.WORD and self.tokens[self.token_pos -2] and self.tokens[self.token_pos -2].type not in [TOKEN.DOT, TOKEN.END_EXPR, TOKEN.OPERATOR, TOKEN.RESERVED] and (self.previous_flags.mode in [MODE.Expression, MODE.BlockStatement] or self.tokens[self.token_pos -2].parent and self.tokens[self.token_pos -2].parent.type == TOKEN.EQUALS)):
                     self.output.space_before_token = self.opts.space_after_function
 
                 if (self.last_type == TOKEN.WORD and self.tokens[self.token_pos -2] and self.tokens[self.token_pos -2].type not in [TOKEN.DOT, TOKEN.RESERVED, TOKEN.END_BLOCK, TOKEN.SEMICOLON, TOKEN.OPERATOR] and
