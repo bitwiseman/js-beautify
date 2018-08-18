@@ -918,6 +918,9 @@ function Beautifier(js_source_text, options) {
               if (tokens[token_pos - 2] && tokens[token_pos - 2].type === TOKEN.RESERVED) {
                 break;
               }
+              if (last_last_text === '*' && tokens[token_pos - 3] && tokens[token_pos - 3].type === TOKEN.RESERVED) {
+                break;
+              }
               isFn = afterTokens[i] === afterTokens[i + 1].parent && afterTokens[i + 1].type === TOKEN.START_BLOCK;
               break;
             }

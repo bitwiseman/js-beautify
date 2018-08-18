@@ -564,7 +564,9 @@ class Beautifier:
                     afterTokens = self.tokens[self.token_pos + 1:]
                     for i in range(len(afterTokens)):
                       if current_token == afterTokens[i].opened:
-                        if self.tokens[self.token_pos -2 ] and self.tokens[self.token_pos -2 ].type == TOKEN.RESERVED:
+                        if self.tokens[self.token_pos - 2] and self.tokens[self.token_pos - 2].type == TOKEN.RESERVED:
+                          break
+                        if self.last_last_text == '*' and self.tokens[self.token_pos - 3] and self.tokens[self.token_pos - 3].type == TOKEN.RESERVED:
                           break
                         isFn = afterTokens[i] == afterTokens[i + 1].parent and afterTokens[i + 1].type == TOKEN.START_BLOCK
                         break
