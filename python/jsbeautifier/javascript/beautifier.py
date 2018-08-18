@@ -443,9 +443,7 @@ class Beautifier:
                           and not self.flags.in_case
                           and not (current_token.text == '--' or current_token.text == '++')
                           and self.last_last_text != 'function'
-                          and current_token.type != TOKEN.WORD and current_token.type != TOKEN.RESERVED
-                          and (current_token.type != TOKEN.OPERATOR or current_token.text in ['+=', '+'])
-                          and (current_token.type != TOKEN.START_EXPR or current_token.text == '('))
+                          and current_token.type != TOKEN.WORD and current_token.type != TOKEN.RESERVED)
         start = start or (
             self.flags.mode == MODE.ObjectLiteral and (
                 (self.flags.last_text == ':' and self.flags.ternary_depth == 0) or (
@@ -560,25 +558,18 @@ class Beautifier:
                 self.output.space_before_token = self.opts.space_after_anon_function
 
             if current_token.text == '(':
-                if (self.last_type == TOKEN.RESERVED and self.flags.last_word in ['get', 'set']):
-                    self.output.space_before_token = self.opts.space_after_function
-
-                if (self.last_type == TOKEN.WORD and self.tokens[self.token_pos -2] and self.tokens[self.token_pos -2].type not in [TOKEN.DOT, TOKEN.END_EXPR, TOKEN.OPERATOR, TOKEN.RESERVED] and (self.previous_flags.mode in [MODE.Expression, MODE.BlockStatement] or self.tokens[self.token_pos -2].parent and self.tokens[self.token_pos -2].parent.type == TOKEN.EQUALS)):
-                    self.output.space_before_token = self.opts.space_after_function
-
-                if (self.last_type == TOKEN.WORD and self.tokens[self.token_pos -2] and self.tokens[self.token_pos -2].type not in [TOKEN.DOT, TOKEN.RESERVED, TOKEN.END_BLOCK, TOKEN.SEMICOLON, TOKEN.OPERATOR] and
-                    self.previous_flags.parent and
-                    ((self.previous_flags.mode != MODE.Statement or self.previous_flags.mode != MODE.BlockStatement) and
-                    (self.previous_flags.declaration_statement or self.previous_flags.parent.last_text == 'default') or
-                    self.previous_flags.parent.mode == MODE.ObjectLiteral) and
-                    self.previous_flags.parent.mode != MODE.Statement and
-                    self.previous_flags.parent.mode != MODE.Expression and
-                    self.previous_flags.last_word != 'if' and
-                    self.previous_flags.last_word != 'else' and
-                    self.previous_flags.last_text != '=>' and
-                    self.previous_flags.last_text != ')'
-                    ):
-                    self.output.space_before_token = self.opts.space_after_function
+                if (self.previous_flags.mode in [MODE.Expression, MODE.Statement, MODE.BlockStatement, MODE.ObjectLiteral] and
+                  (self.last_type == TOKEN.WORD or self.last_type == TOKEN.RESERVED and self.flags.last_word in ['get', 'set'])):
+                    isFn = False
+                    afterTokens = self.tokens[self.token_pos + 1:]
+                    for i in range(len(afterTokens)):
+                      if current_token == afterTokens[i].opened:
+                        if self.tokens[self.token_pos -2 ] and self.tokens[self.token_pos -2 ].type == TOKEN.RESERVED:
+                          break
+                        isFn = afterTokens[i] == afterTokens[i + 1].parent and afterTokens[i + 1].type == TOKEN.START_BLOCK
+                        break
+                    if isFn:
+                      self.output.space_before_token = self.opts.space_after_function
 
         if self.flags.last_text == ';' or self.last_type == TOKEN.START_BLOCK:
             self.print_newline()

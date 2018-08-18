@@ -749,15 +749,30 @@ function Beautifier(js_source_text, options) {
       !(current_token.text === '--' || current_token.text === '++') &&
       last_last_text !== 'function' &&
       current_token.type !== TOKEN.WORD &&
-      current_token.type !== TOKEN.RESERVED &&
-      (current_token.type !== TOKEN.OPERATOR || in_array(current_token.text, ['+=', '+'])) &&
-      (current_token.type !== 'TK_START_EXPR' || current_token.text === '('));
+      current_token.type !== TOKEN.RESERVED);
     start = start || (flags.mode === MODE.ObjectLiteral && (
       (flags.last_text === ':' && flags.ternary_depth === 0) || (last_type === TOKEN.RESERVED && in_array(flags.last_text, ['get', 'set']))));
 
     if (start) {
       set_mode(MODE.Statement);
-      indent();
+      if (opt.space_after_function && current_token.type === TOKEN.START_EXPR && current_token.text === '(') {
+        var isFn = false;
+        var afterTokens = tokens.slice(token_pos + 1);
+        for (var i = 0; i < afterTokens.length; i++) {
+          if (current_token === afterTokens[i].opened) {
+            if (tokens[token_pos - 2] && tokens[token_pos - 2].text === '*') {
+              break;
+            }
+            isFn = afterTokens[i] === afterTokens[i + 1].parent && afterTokens[i + 1].type === TOKEN.START_BLOCK;
+            break;
+          }
+        }
+        if (!isFn || tokens[token_pos - 2] && tokens[token_pos - 2].text === '}') {
+          indent();
+        }
+      } else {
+        indent();
+      }
 
       handle_whitespace_and_comments(current_token, true);
 
@@ -898,49 +913,33 @@ function Beautifier(js_source_text, options) {
       // In some linters, the property name and the left parenthesis need to have a space, something like that
       // var obj = {a () {}}
       // The following code is doing just that
-      if (current_token.text === '(') {
-        // If you keep the keyword get or set, execute the if statement
-        if (last_type === 'TK_RESERVED' && in_array(flags.last_word, ['get', 'set'])) {
-          output.space_before_token = opt.space_after_function;
-        }
-
-        // 1、Rule out chained function calls
-        // 2、Object assignment expression,such as
-        // var obj = {
-        //  a () {}
-        // }
-        // 3、The object parameters
-        // new Vue({
-        //   data () {}
-        // })
-        if (last_type === 'TK_WORD' &&
-          tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_END_EXPR', 'TK_OPERATOR', 'TK_RESERVED']) &&
-          (in_array(previous_flags.mode, ['Expression', 'BlockStatement']) || tokens[token_pos - 2].parent && tokens[token_pos - 2].parent.type === 'TK_EQUALS')
+      //
+      // 1、Rule out chained function calls
+      // 2、Object assignment expression,such as
+      // var obj = {
+      //  a () {}
+      // }
+      // 3、The object parameters
+      // new Vue({
+      //   data () {}
+      // })
+      if (opt.space_after_function && current_token.text === '(') {
+        if (
+          in_array(previous_flags.mode, ['Expression', 'Statement', 'BlockStatement', 'ObjectLiteral']) &&
+          (last_type === TOKEN.WORD || last_type === TOKEN.RESERVED && in_array(flags.last_word, ['get', 'set']))
         ) {
-          output.space_before_token = opt.space_after_function;
-        }
-
-        // 1、Exclude chained function calls, named function definitions, element calls after block-level elements, Function call after semicolon, The object property value is the function execution statement
-        // 2、the parent element is not a declaration statement or block level declaration statement and the parent element is an assignment statement or the parent's text content is' default ', or the parent is an object literal
-        // 3、the parent exists and the parent is not declarative statements and expressions
-        // 4、the parent keywords are not 'if' and 'else'
-        // 5、the parent text is not '=>' and ') '
-        if (last_type === 'TK_WORD' &&
-          tokens[token_pos - 2] &&
-          !in_array(tokens[token_pos - 2].type, ['TK_DOT', 'TK_RESERVED', 'TK_END_BLOCK', 'TK_END_EXPR', 'TK_SEMICOLON', 'TK_OPERATOR']) &&
-          ((previous_flags.mode !== MODE.Statement || previous_flags.mode !== MODE.BlockStatement) &&
-            (previous_flags.declaration_statement || previous_flags.parent.last_text === 'default') ||
-            previous_flags.parent.mode === MODE.ObjectLiteral) &&
-          previous_flags.parent &&
-          previous_flags.parent.mode !== MODE.Statement &&
-          previous_flags.parent.mode !== MODE.Expression &&
-          previous_flags.last_word !== 'if' &&
-          previous_flags.last_word !== 'else' &&
-          previous_flags.last_text !== '=>' &&
-          previous_flags.last_text !== ')'
-        ) {
-          output.space_before_token = opt.space_after_function;
+          var isFn = false;
+          var afterTokens = tokens.slice(token_pos + 1);
+          for (var i = 0; i < afterTokens.length; i++) {
+            if (current_token === afterTokens[i].opened) {
+              if (tokens[token_pos - 2] && tokens[token_pos - 2].type === TOKEN.RESERVED) {
+                break;
+              }
+              isFn = afterTokens[i] === afterTokens[i + 1].parent && afterTokens[i + 1].type === TOKEN.START_BLOCK;
+              break;
+            }
+          }
+          output.space_before_token = isFn ? opt.space_after_function : false;
         }
       }
 
