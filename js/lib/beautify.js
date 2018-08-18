@@ -755,24 +755,7 @@ function Beautifier(js_source_text, options) {
 
     if (start) {
       set_mode(MODE.Statement);
-      if (opt.space_after_function && current_token.type === TOKEN.START_EXPR && current_token.text === '(') {
-        var isFn = false;
-        var afterTokens = tokens.slice(token_pos + 1);
-        for (var i = 0; i < afterTokens.length; i++) {
-          if (current_token === afterTokens[i].opened) {
-            if (tokens[token_pos - 2] && tokens[token_pos - 2].text === '*') {
-              break;
-            }
-            isFn = afterTokens[i] === afterTokens[i + 1].parent && afterTokens[i + 1].type === TOKEN.START_BLOCK;
-            break;
-          }
-        }
-        if (!isFn || tokens[token_pos - 2] && tokens[token_pos - 2].text === '}') {
-          indent();
-        }
-      } else {
-        indent();
-      }
+      indent();
 
       handle_whitespace_and_comments(current_token, true);
 
