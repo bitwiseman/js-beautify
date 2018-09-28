@@ -1,3 +1,4 @@
+/*jshint strict:false, node:false */
 /*exported run_tests, read_settings_from_cookie, beautify, submitIssue */
 var the = {
   use_codemirror: !window.location.href.match(/without-codemirror/),
@@ -19,6 +20,7 @@ requirejs(['beautifier'],
   function(beautifier) {
     the.beautifier = beautifier;
   });
+
 
 function any(a, b) {
   return a || b;
@@ -95,26 +97,28 @@ function store_settings_to_cookie() {
 }
 
 function unpacker_filter(source) {
-  var trailing_comments = '',
+  var leading_comments = '',
     comment = '',
     unpacked = '',
     found = false;
 
-  // cut trailing comments
+  // cuts leading comments
   do {
     found = false;
     if (/^\s*\/\*/.test(source)) {
       found = true;
       comment = source.substr(0, source.indexOf('*/') + 2);
-      source = source.substr(comment.length).replace(/^\s+/, '');
-      trailing_comments += comment + "\n";
+      source = source.substr(comment.length);
+      leading_comments += comment;
     } else if (/^\s*\/\//.test(source)) {
       found = true;
       comment = source.match(/^\s*\/\/.*/)[0];
-      source = source.substr(comment.length).replace(/^\s+/, '');
-      trailing_comments += comment + "\n";
+      source = source.substr(comment.length);
+      leading_comments += comment;
     }
   } while (found);
+  leading_comments += '\n';
+  source = source.replace(/^\s+/, '');
 
   var unpackers = [P_A_C_K_E_R, Urlencoded, JavascriptObfuscator /*, MyObfuscate*/ ];
   for (var i = 0; i < unpackers.length; i++) {
@@ -126,7 +130,7 @@ function unpacker_filter(source) {
     }
   }
 
-  return trailing_comments + source;
+  return leading_comments + source;
 }
 
 
@@ -150,7 +154,7 @@ function beautify() {
   the.language = $('#language option:selected').text();
 
   opts.indent_size = $('#tabsize').val();
-  opts.indent_char = opts.indent_size === 1 ? '\t' : ' ';
+  opts.indent_char = parseInt(opts.indent_size, 10) === 1 ? '\t' : ' ';
   opts.max_preserve_newlines = $('#max-preserve-newlines').val();
   opts.preserve_newlines = opts.max_preserve_newlines !== "-1";
   opts.keep_array_indentation = $('#keep-array-indentation').prop('checked');
