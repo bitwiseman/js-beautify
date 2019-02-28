@@ -3116,7 +3116,55 @@ exports.test_data = {
             '    a: 1',
             '}'
           ]
+        }, {
+          comment: '#1622',
+          input: [
+            'class  blah {',
+            '    constructor() {',
+            '        this.doStuff()',
+            '    }',
+            '',
+            '    doStuff() {',
+            '        console.log("stuff")',
+            '    }',
+            '}',
+            '',
+            'function test () {',
+            '    constructor (); // function named constructor',
+            '}'
+          ],
+          output: [
+            'class blah {',
+            '    constructor{{nf}}() {',
+            '        this.doStuff()',
+            '    }',
+            '',
+            '    doStuff{{nf}}() {',
+            '        console.log("stuff")',
+            '    }',
+            '}',
+            '',
+            'function test{{nf}}() {',
+            '    constructor(); // function named constructor',
+            '}'
+          ]
+        }, {
+          input: [
+            'export default class StringArrayType extends ArgumentType {',
+            '    constructor (client) {',
+            '        super(client, "stringarray");',
+            '    }',
+            '}'
+          ],
+          output: [
+            'export default class StringArrayType extends ArgumentType {',
+            '    constructor{{nf}}(client) {',
+            '        super(client, "stringarray");',
+            '    }',
+            '}'
+          ]
         }
+
       ]
     }, {
       name: "Regression tests",

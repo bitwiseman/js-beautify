@@ -589,7 +589,8 @@ Beautifier.prototype.handle_start_expr = function(current_token) {
       if (this._options.space_after_named_function && peek_back_two) {
         // peek starts at next character so -1 is current token
         var peek_back_three = this._tokens.peek(-4);
-        if (reserved_array(peek_back_two, ['async', 'function']) ||
+        if (this._flags.last_token.text === 'constructor' ||
+          reserved_array(peek_back_two, ['async', 'function']) ||
           (peek_back_two.text === '*' && reserved_array(peek_back_three, ['async', 'function']))) {
           this._output.space_before_token = true;
         } else if (this._flags.mode === MODE.ObjectLiteral) {
